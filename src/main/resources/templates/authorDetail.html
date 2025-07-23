@@ -24,6 +24,7 @@
             <img th:if="${author.photo != null}" th:src="@{'/images/authors/' + ${author.photo}}" alt="Foto Autore" class="img-thumbnail mb-3" width="150">
             <img th:if="${author.photo == null}" src="/images/default.jpg" class="img-thumbnail mb-3" alt="Foto mancante" width="150">
         </div>
+		<h1 th:text="${numero}">numero</h1>
 
         <!-- Foto secondarie -->
         <div class="col-12 mb-4">

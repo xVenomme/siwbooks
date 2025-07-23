@@ -41,7 +41,7 @@ public class AuthorController {
         model.addAttribute("author", author);
         model.addAttribute("books", author.getBooks());
         model.addAttribute("extraPhotos", author.getPhotos());
-        
+        model.addAttribute("numero", author.getBooks().size());
         return "authorDetail";
     }
 
