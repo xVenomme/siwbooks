@@ -1,0 +1,61 @@
+.glass-nav {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0 0 12px 12px;
+}
+
+.navbar .navbar-brand span {
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.navbar .nav-link {
+    color: #e0e0e0 !important;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    color: #ffffff !important;
+}
+
+.navbar .btn {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar .nav-link {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+.navbar .btn-light:hover {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.review-card {
+    background: #ffffff;
+    border: 1px solid #ccc; /* BORDO GRIGIO */
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+
+.navbar .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #000;
+}
+
+.navbar .btn-danger {
+    background-color: #e74c3c;
+    border: none;
+}
+
+.navbar .btn-danger:hover {
+    background-color: #c0392b;
+}

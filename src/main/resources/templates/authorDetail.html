@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Autore: ' + ${author.name} + ' ' + ${author.surname}">Dettaglio Autore</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/authorDetail.css}">
+    <link rel="stylesheet" href="/css/general.css" />
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <!-- Titolo -->
+    <div class="row">
+        <div class="col">
+            <h1 th:text="${author.name} + ' ' + ${author.surname}">Nome Cognome</h1>
+        </div>
+    </div>
+
+    <!-- Dati Autore -->
+    <div class="row mt-4">
+        <!-- Foto principale -->
+        <div class="col-12 text-center">
+            <img th:if="${author.photo != null}" th:src="@{'/images/authors/' + ${author.photo}}" alt="Foto Autore" class="img-thumbnail mb-3" width="150">
+            <img th:if="${author.photo == null}" src="/images/default.jpg" class="img-thumbnail mb-3" alt="Foto mancante" width="150">
+        </div>
+
+        <!-- Foto secondarie -->
+        <div class="col-12 mb-4">
+            <h5>📸 Altre foto:</h5>
+            <div class="d-flex flex-wrap gap-3">
+                <th:block th:if="${extraPhotos != null and !extraPhotos.isEmpty()}">
+                    <img th:each="photo : ${extraPhotos}" th:src="@{'/images/authors/' + ${photo}}"
+                         alt="Foto aggiuntiva"
+                         class="img-thumbnail mr-2 mb-2"
+                         style="width: 120px; height: auto; object-fit: cover;"
+                         onerror="this.src='/images/default.jpg'" />
+                </th:block>
+                <th:block th:if="${extraPhotos == null or extraPhotos.isEmpty()}">
+                    <p class="text-muted">Nessuna foto secondaria disponibile.</p>
+                </th:block>
+            </div>
+        </div>
+
+        <!-- Info autore -->
+        <div class="col-md-8 offset-md-2">
+            <div class="card-author-info">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Nazionalità:</strong>
+                        <span th:text="${author.nationality}">Italiana</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Data di nascita:</strong>
+                        <span th:text="${#temporals.format(author.birthDate, 'dd/MM/yyyy')}">01/01/1900</span>
+                    </li>
+                    <li class="list-group-item" th:if="${author.deathDate != null}">
+                        <strong>Data di morte:</strong>
+                        <span th:text="${#temporals.format(author.deathDate, 'dd/MM/yyyy')}">01/01/1980</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pulsante mostra opere -->
+    <div class="row mt-5 justify-content-center">
+        <div class="col-md-6 text-center">
+            <button class="btn btn-gradient btn-lg shadow-sm px-5 py-2" onclick="toggleBooks()">
+                📚 Visualizza le sue opere
+            </button>
+        </div>
+    </div>
+
+    <!-- Lista delle opere con immagine -->
+    <div class="row mt-3" id="bookListContainer" style="display: none;">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item d-flex align-items-center" th:each="book : ${books}">
+                    <a th:href="@{'/book/' + ${book.id}}" class="d-flex align-items-center text-decoration-none text-dark">
+                        <img th:if="${book.images != null and !book.images.isEmpty()}"
+                             th:src="@{'/images/books/' + ${book.images[0]}}"
+                             class="me-3" style="height: 64px; width: auto; border-radius: 4px;"
+                             alt="Copertina libro"
+                             onerror="this.src='/images/default.jpg'" />
+                        <img th:if="${book.images == null or book.images.isEmpty()}"
+                             src="/images/default.jpg"
+                             class="me-3" style="height: 64px; width: auto; border-radius: 4px;"
+                             alt="Copertina mancante" />
+                        <span th:text="${book.title}">Titolo Libro</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pulsante Torna Indietro -->
+    <div class="row mt-4">
+        <div class="col">
+            <a th:href="@{/authorList}" class="btn btn-outline-primary">Torna alla lista autori</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleBooks() {
+        const container = document.getElementById('bookListContainer');
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>

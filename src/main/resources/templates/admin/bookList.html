@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	
+    <title>Lista Libri</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" href="/css/general.css" />
+	<link rel="stylesheet" href="/css/book.css" />
+    <style>
+        .book-card {
+            transition: transform 0.2s ease;
+        }
+
+        .book-card:hover {
+            transform: scale(1.02);
+        }
+
+        .book-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+        }
+
+        .book-image {
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            max-width: 100%;
+        }
+
+        .book-title {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .book-year {
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+	<!-- Titolo pagina -->
+	<div class="row mb-4 justify-content-between align-items-center">
+	    <div class="col-md-6 text-center text-md-left">
+	        <h1>Libri Disponibili</h1>
+	    </div>
+	    <div class="col-md-6 text-md-right">
+	        <a href="/admin/bookForm" class="btn btn-success">➕ Aggiungi Libro</a>
+	    </div>
+	</div>
+    <!-- Griglia libri -->
+    <div class="row" th:if="${books != null and !books.isEmpty()}">
+        <div class="col-md-3 mb-4" th:each="book : ${books}">
+            <div class="card book-card h-100 shadow-sm text-center">
+                <a th:href="@{'/book/' + ${book.id}}" class="text-decoration-none text-dark">
+                    <div class="book-image-container">
+                        <img th:if="${book.images != null and !book.images.isEmpty()}"
+                             th:src="@{'/images/books/' + ${book.images[0]}}"
+                             class="book-image"
+                             alt="Copertina libro"
+                             onerror="this.src='/images/default-book.png'" />
+                        <img th:if="${book.images == null or book.images.isEmpty()}"
+                             src="/images/default.png"
+                             class="book-image"
+                             alt="Copertina mancante" />
+                    </div>
+                    <div class="card-body">
+                        <p class="book-title" th:text="${book.title}">Titolo Libro</p>
+                        <p class="book-year" th:text="'Pubblicato nel ' + ${book.publicationYear}">Anno</p>
+                    </div>
+					<!-- Bottone Modifica -->
+					<a th:href="@{'/admin/book/edit/' + ${book.id}}" class="btn btn-warning btn-sm mt-1">✏️ Modifica</a>
+
+					<form th:action="@{'/admin/book/delete/' + ${book.id}}" method="post" class="mt-2">
+					    <button type="submit" class="btn btn-danger btn-sm">🗑️ Elimina</button>
+					</form>
+
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nessun libro -->
+    <div class="row" th:if="${books == null or books.isEmpty()}">
+        <div class="col text-center">
+            <p class="text-muted">Nessun libro disponibile al momento.</p>
+        </div>
+    </div>
+
+    <!-- Pulsante indietro -->
+    <div class="row mt-4">
+        <div class="col text-center">
+            <a th:href="@{/}" class="btn btn-outline-secondary">Torna alla Home</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

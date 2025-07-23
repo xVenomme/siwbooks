@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Home Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">SiwBooks</a>
+
+    <div class="ml-auto">
+        <!-- Se NON autenticato -->
+        <th:block sec:authorize="isAnonymous()">
+            <a class="btn btn-outline-light mr-2" href="/formLogin">Accedi</a>
+            <a class="btn btn-light" href="/register">Registrati</a>
+        </th:block>
+
+        <!-- Se autenticato -->
+        <th:block sec:authorize="isAuthenticated()">
+            <span class="text-white mr-2" th:text="${#authentication.name}"></span>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button class="btn btn-danger" type="submit">Logout</button>
+            </form>
+        </th:block>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="jumbotron">
+
+        <!-- Titolo -->
+        <h1 class="display-4">Benvenuto su SiwBooks!</h1>
+
+        <!-- Messaggio di benvenuto personalizzato -->
+        <th:block sec:authorize="isAuthenticated()">
+            <p class="lead">Bentornato, <span th:text="${#authentication.name}">Utente</span>!</p>
+        </th:block>
+        <th:block sec:authorize="isAnonymous()">
+            <p class="lead">Accedi o registrati per lasciare recensioni e accedere a funzioni avanzate.</p>
+        </th:block>
+
+        <hr class="my-4">
+
+        <!-- Sempre visibili -->
+        <a class="btn btn-primary btn-lg mx-1" href="/bookList" role="button">📚 Visualizza Libri</a>
+        <a class="btn btn-primary btn-lg mx-1" href="/authorList" role="button">🖋️ Visualizza Autori</a>
+
+        <!-- Solo per admin -->
+        <th:block sec:authorize="hasAuthority('ADMIN')">
+            <hr class="my-4">
+            <a class="btn btn-warning btn-lg mx-1" href="/admin/bookList" role="button">✏️ Modifica Libri</a>
+            <a class="btn btn-warning btn-lg mx-1" href="/admin/authorList" role="button">✏️ Modifica Autori</a>
+        </th:block>
+
+    </div>
+</div>
+</body>
+</html>
