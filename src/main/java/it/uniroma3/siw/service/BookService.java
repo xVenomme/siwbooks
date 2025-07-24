@@ -50,6 +50,10 @@ public class BookService {
         Optional<Book> result = bookRepository.findById(id);
         return result.orElse(null);
     }
+    
+    public long countAllBooks() {
+        return this.bookRepository.count();
+    }
 
     public Book findByIdWithAuthorsAndReviews(Long id) {
         return bookRepository.fetchWithAuthorsAndReviews(id).orElse(null);

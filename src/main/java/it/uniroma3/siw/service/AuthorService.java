@@ -48,6 +48,11 @@ public class AuthorService {
         return authorRepository.findAllByOrderBySurnameAscNameAsc();
     }
     
+
+    public long countAllAuthors() {
+        return authorRepository.count();
+    }
+    
     
     public void save(Author author) {
         authorRepository.save(author);

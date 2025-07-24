@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.AuthorService;
+import it.uniroma3.siw.service.BookService;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.UserService;
 import jakarta.validation.Valid;
@@ -24,7 +26,13 @@ public class AuthenticationController {
 	private CredentialsService credentialsService;
 
 	@Autowired
+	private BookService bookService;
+	
+	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AuthorService authorService;
 
 	@GetMapping(value = "/register")
 	public String showRegisterForm(Model model) {
@@ -54,7 +62,11 @@ public class AuthenticationController {
 		else{
 			model.addAttribute("isAdmin", false);
 		}
-
+		long count = bookService.countAllBooks();     
+	    model.addAttribute("numeroLibri", count);
+	    
+	    long countAuthors = authorService.countAllAuthors();  
+        model.addAttribute("numeroAutori", countAuthors);
 		return "homePage.html";
 	}
 		
