@@ -49,6 +49,7 @@ public class AuthConfiguration {
 						.requestMatchers(HttpMethod.GET, "/logo.png").permitAll()
 						.requestMatchers(HttpMethod.GET, "/favicon.ico").permitAll()
 						.requestMatchers(HttpMethod.GET, "/bookList").permitAll()
+						.requestMatchers(HttpMethod.GET, "/mappa").permitAll()
 						.requestMatchers(HttpMethod.GET, "/authorList").permitAll()
 						.requestMatchers(HttpMethod.GET, "/book/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/author/**").permitAll()
