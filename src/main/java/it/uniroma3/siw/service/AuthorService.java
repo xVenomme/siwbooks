@@ -57,5 +57,9 @@ public class AuthorService {
     public void save(Author author) {
         authorRepository.save(author);
     }
-    // altri metodi se ti servono
+    
+    public List<Author> findByNationality(String nationality) {
+        return authorRepository.findByNationality(nationality);
+    }
+    
 }

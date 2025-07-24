@@ -157,4 +157,13 @@ public class AuthorController {
         model.addAttribute("isAdmin", true);
         return "authorList";
     }
+    
+    @GetMapping("/nazionalita/{nazionalita}")
+    public String listNazionalita(Model model,@PathVariable("nazionalita") String nazionalita) {
+        model.addAttribute("authors", authorService.findByNationality(nazionalita));
+        model.addAttribute("title", "Lista Autori");
+        return "authorList";
+    }
+    
+    
 }

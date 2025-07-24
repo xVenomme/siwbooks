@@ -51,8 +51,16 @@
             <div class="card-author-info">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <strong>Nazionalità:</strong>
-                        <span th:text="${author.nationality}">Italiana</span>
+                        <strong>Nazionalità:</strong>  
+                        
+						<!-----
+							Quello per fare in modo che sia cliccabile e rimanda a tutti gli autori dello stesso anno
+							in author controller c'è il resto (utilizzo anche author repository)
+						--->
+						<a th:href="@{'/nazionalita/' + ${author.nationality}}"
+							           th:text="${author.nationality}">2025</a>
+						
+						
                     </li>
                     <li class="list-group-item">
                         <strong>Data di nascita:</strong>
