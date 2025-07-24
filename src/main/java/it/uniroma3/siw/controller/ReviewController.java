@@ -4,9 +4,12 @@ import it.uniroma3.siw.model.*;
 import it.uniroma3.siw.service.*;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +58,7 @@ public class ReviewController {
     }
 
     
+    
 
     // Salva recensione
     @PostMapping("/book/{id}/review")
@@ -81,4 +85,25 @@ public class ReviewController {
         reviewService.save(review);
         return "redirect:/book/" + bookId;
     }
+    
+    
+    
+    // tutte le mie recensioni
+    @GetMapping("/myReviews")
+    public String getMyReviews(Model model) {
+        // Recupera l'utente dal servizio UserService
+        User user = userService.getCurrentUser();
+        
+        // Recupera le recensioni dell'utente
+        List<Review> reviews = user.getReviews();
+        
+        // Aggiunge la lista di recensioni al modello
+        model.addAttribute("reviews", reviews);
+        
+        return "myReviews"; // Thymeleaf template: myReviews.html
+    }
+    
+    
+    
+    
 }

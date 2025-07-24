@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Le mie Recensioni</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/general.css}">
+    <style>
+        .review-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s;
+        }
+        .review-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .review-rating {
+            font-size: 1.1rem;
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/}">Home</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/bookList}">Catalogo Libri</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/myReviews}">Le mie Recensioni</a>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn btn-outline-light btn-sm ml-2" type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Le mie Recensioni</h2>
+    <div th:if="${#lists.isEmpty(reviews)}" class="text-center text-muted">
+        <p>Non hai ancora scritto recensioni.</p>
+    </div>
+    <div th:each="review : ${reviews}" class="review-card">
+        <div class="review-header">
+            <h5 th:text="${review.title}">Titolo recensione</h5>
+            <span class="review-rating" th:text="'⭐ ' + ${review.rating} + '/5'">⭐ 5/5</span>
+        </div>
+        <p class="mt-2" th:text="${review.content}">Contenuto recensione</p>
+        <p class="mt-3">
+            Libro: 
+            <a th:href="@{'/book/' + ${review.book.id}}"
+               th:text="${review.book.title}">Titolo Libro</a>
+        </p>
+        <div class="text-right">
+            <a th:href="@{'/book/' + ${review.book.id} + '/review'}" class="btn btn-sm btn-primary mr-2">Modifica</a>
+            <form th:action="@{'/admin/review/' + ${review.id} + '/delete'}" method="post" style="display:inline;" onsubmit="return confirm('Confermi eliminazione?');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <input type="hidden" name="bookId" th:value="${review.book.id}" />
+                <button type="submit" class="btn btn-sm btn-danger">Elimina</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -50,6 +50,7 @@
 		    🖋️ Autori (<span th:text="${numeroAutori}">0</span>)
 		  </a>
 		<a class="btn btn-primary btn-lg mx-1" href="/mappa" role="button">📍 Trova la biblioteca più vicina a te</a>
+		<a class="btn btn-primary btn-lg mx-1" href="/myReviews" role="button">📝 Le mie Reviews</a>
         <!-- Solo per admin -->
         <th:block sec:authorize="hasAuthority('ADMIN')">
             <hr class="my-4">
