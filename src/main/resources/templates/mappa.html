@@ -3,8 +3,7 @@
 <head>
     <title>Vieni a Trovarci!</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-	<link rel="stylesheet" th:href="@{/css/mappa.css}">
-
+    <link rel="stylesheet" th:href="@{/css/mappa.css}">
     <style>
         #map {
             height: 500px;
@@ -17,7 +16,7 @@
 <body>
 
 <div class="container">
-    <h1>🗺️ Trova la libreria più vicina a te!</h1>
+    <h1>📚 Trova la libreria più vicina a te!</h1>
     <p>Autorizza l'accesso alla tua posizione per visualizzare la mappa:</p>
 
     <div id="map"></div>
@@ -25,143 +24,110 @@
     <a th:href="@{/}" class="btn">⬅️ Torna alla Home</a>
 </div>
 
-
 <script>
     let map;
 
     function initMap() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const userPos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userPos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
 
-                    map = new google.maps.Map(document.getElementById("map"), {
-                        center: userPos,
-                        zoom: 10
-                    });
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: userPos,
+                    zoom: 10
+                });
 
-                    const userMarker = new google.maps.Marker({
-                        position: userPos,
-                        map,
-                        title: "📍 Sei qui!",
-                        icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                    });
+                new google.maps.Marker({
+                    position: userPos,
+                    map,
+                    title: "📍 Sei qui!",
+                    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                });
 
-					// 🔴 Marker fissi per le librerie
-					const fixedLibraries = [
-					    {
-					        nome: "Libreria di Ostia",
-					        posizione: { lat: 41.7286, lng: 12.2855 },
-					        indirizzo: "📍 Via del Mare, Ostia"
-					    },
-					    {
-					        nome: "Libreria di Acilia Nord",
-					        posizione: { lat: 41.77677, lng: 12.35865 },
-					        indirizzo: "📍 Via Gino Bonichi, Acilia"
-					    },
-						{
-							 nome: "Libreria di Acilia Sud",
-							 posizione: { lat: 41.7747474, lng: 12.3444442 },
-							 indirizzo: "📍 Via Umberto Lilloni 113, Acilia"
-						},
-						{
-						  nome: "Libreria dell'Infernetto, la più bella del mondo",
-						  posizione: { lat: 41.74547, lng: 12.35988 },
-						  indirizzo: "📍 Via Pier Alessandro Guglielmi 84, Infernetto"
-						},
-
-
-					];
-
-					fixedLibraries.forEach(lib => {
-					    const marker = new google.maps.Marker({
-					        position: lib.posizione,
-					        map,
-					        title: lib.nome,
-					        icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-					    });
-
-					    const infoWindow = new google.maps.InfoWindow({
-					        content: `<strong>${lib.nome}</strong><br>${lib.indirizzo}`
-					    });
-
-					    marker.addListener("click", () => infoWindow.open(map, marker));
-					});
-
-
-
-                    // Funzione per calcolare distanza (in km)
-                    function haversineDistance(pos1, pos2) {
-                        function toRad(x) {
-                            return x * Math.PI / 180;
-                        }
-
-                        const R = 6371;
-                        const dLat = toRad(pos2.lat - pos1.lat);
-                        const dLon = toRad(pos2.lng - pos1.lng);
-                        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                            Math.cos(toRad(pos1.lat)) * Math.cos(toRad(pos2.lat)) *
-                            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                        return R * c;
+                const libraries = [
+                    {
+                        nome: "Libreria di Ostia",
+                        posizione: { lat: 41.7286, lng: 12.2855 },
+                        indirizzo: "📍 Via del Mare, Ostia"
+                    },
+                    {
+                        nome: "Libreria di Acilia Nord",
+                        posizione: { lat: 41.77677, lng: 12.35865 },
+                        indirizzo: "📍 Via Gino Bonichi, Acilia"
+                    },
+                    {
+                        nome: "Libreria dell'Infernetto, la più bella del mondo",
+                        posizione: { lat: 41.74547, lng: 12.35988 },
+                        indirizzo: "📍 Via Pier Alessandro Guglielmi 84, Infernetto"
                     }
+                ];
 
-                    let nearest = null;
-                    let nearestDistance = Infinity;
-
-                    bunkerList.forEach(b => {
-                        const bunkerPos = { lat: b.latitudine, lng: b.longitudine };
-                        const distance = haversineDistance(userPos, bunkerPos).toFixed(2);
-
-                        if (distance < nearestDistance) {
-                            nearestDistance = distance;
-                            nearest = bunkerPos;
-                        }
-
-                        const marker = new google.maps.Marker({
-                            position: bunkerPos,
-                            map,
-                            title: b.nome,
-                            icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-                        });
-
-                        const info = `
-                            <strong>${b.nome}</strong><br>
-                            Livello sicurezza: ${b.livelloSicurezza}<br>
-                            Distanza: ${distance} km
-                        `;
-
-                        const infowindow = new google.maps.InfoWindow({ content: info });
-
-                        marker.addListener("click", () => infowindow.open(map, marker));
-                    });
-
-                    if (nearest) {
-                        new google.maps.Marker({
-                            position: nearest,
-                            map,
-                            title: "🔰 Bunker più vicino",
-                            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                        });
-                    }
-                },
-                () => {
-                    alert("Autorizzazione negata alla geolocalizzazione.");
+                function haversineDistance(pos1, pos2) {
+                    function toRad(x) { return x * Math.PI / 180; }
+                    const R = 6371;
+                    const dLat = toRad(pos2.lat - pos1.lat);
+                    const dLon = toRad(pos2.lng - pos1.lng);
+                    const a = Math.sin(dLat / 2) ** 2 +
+                              Math.cos(toRad(pos1.lat)) * Math.cos(toRad(pos2.lat)) *
+                              Math.sin(dLon / 2) ** 2;
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return R * c;
                 }
-            );
+
+                let nearest = null;
+                let nearestDistance = Infinity;
+
+                libraries.forEach(lib => {
+                    const distanza = haversineDistance(userPos, lib.posizione);
+                    if (distanza < nearestDistance) {
+                        nearestDistance = distanza;
+                        nearest = lib;
+                        nearest.distanza = distanza;
+                    }
+
+                    const marker = new google.maps.Marker({
+                        position: lib.posizione,
+                        map,
+                        title: lib.nome,
+                        icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<strong>${lib.nome}</strong><br>${lib.indirizzo}<br>📏 ${distanza.toFixed(2)} km`
+                    });
+
+                    marker.addListener("click", () => infoWindow.open(map, marker));
+                });
+
+                if (nearest) {
+                    const markerVerde = new google.maps.Marker({
+                        position: nearest.posizione,
+                        map,
+                        title: `${nearest.nome} (libreria più vicina)`,
+                        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<strong>${nearest.nome}</strong><br>${nearest.indirizzo}<br>📏 ${nearest.distanza.toFixed(2)} km`
+                    });
+
+                    markerVerde.addListener("click", () => infoWindow.open(map, markerVerde));
+                }
+            }, () => {
+                alert("Autorizzazione negata alla geolocalizzazione.");
+            });
         } else {
             alert("Geolocalizzazione non supportata.");
         }
     }
 </script>
 
-
 <!-- Google Maps API -->
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM2NEx_NKcH9UAZikMe_QFYHHVTQ31jcs&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM2NEx_NKcH9UAZikMe_QFYHHVTQ31jcs&callback=initMap">
 </script>
 
 </body>
