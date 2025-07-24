@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Autore</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/general.css" />
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4">✏️ Modifica Autore</h2>
+
+    <form th:action="@{'/admin/author/edit/' + ${author.id}}" method="post" enctype="multipart/form-data" th:object="${author}">
+        
+        <!-- Nome -->
+        <div class="form-group mb-3">
+            <label for="name">Nome</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" required />
+        </div>
+
+        <!-- Cognome -->
+        <div class="form-group mb-3">
+            <label for="surname">Cognome</label>
+            <input type="text" id="surname" class="form-control" th:field="*{surname}" required />
+        </div>
+
+        <!-- Data di nascita -->
+        <div class="form-group mb-3">
+            <label for="birthDate">Data di nascita</label>
+            <input type="date"
+                   id="birthDate"
+                   name="birthDate"
+                   class="form-control"
+                   th:value="${author.birthDate} != null ? ${#temporals.format(author.birthDate,'yyyy-MM-dd')} : ''"
+                   required />
+        </div>
+
+        <!-- Data di morte -->
+        <div class="form-group mb-3">
+            <label for="deathDate">Data di morte (se applicabile)</label>
+            <input type="date"
+                   id="deathDate"
+                   name="deathDate"
+                   class="form-control"
+                   th:value="${author.deathDate} != null ? ${#temporals.format(author.deathDate,'yyyy-MM-dd')} : ''" />
+        </div>
+
+        <!-- Nazionalità -->
+        <div class="form-group mb-3">
+            <label for="nationality">Nazionalità</label>
+            <input type="text" id="nationality" class="form-control" th:field="*{nationality}" />
+        </div>
+
+        <!-- Foto attuale -->
+        <div class="form-group mb-3">
+            <label>📷 Foto attuale:</label><br>
+            <img th:if="${author.photo} != null" th:src="@{'/images/authors/' + ${author.photo}}" class="img-thumbnail" style="max-width: 150px;" />
+            <p th:if="${author.photo} == null" class="text-muted">Nessuna foto disponibile.</p>
+        </div>
+
+        <!-- Nuova foto -->
+        <div class="form-group mb-3">
+            <label for="imageFile">📤 Nuova foto (sostituisce la precedente, opzionale)</label>
+            <input type="file" class="form-control-file" id="imageFile" name="imageFile" accept="image/*" />
+        </div>
+
+        <!-- Aggiunta di altre immagini -->
+        <div class="form-group mb-4">
+            <label for="extraImages">📁 Aggiungi altre foto (opzionale)</label>
+            <input type="file" class="form-control-file" id="extraImages" name="extraImages" multiple accept="image/*" />
+        </div>
+
+        <!-- Pulsanti -->
+        <button type="submit" class="btn btn-primary">💾 Salva modifiche</button>
+        <a th:href="@{/admin/authorList}" class="btn btn-outline-secondary ml-2">Annulla</a>
+    </form>
+</div>
+
+</body>
+</html>

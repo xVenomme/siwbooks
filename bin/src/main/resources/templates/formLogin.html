@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/general.css" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2 class="login-title">Accedi al tuo account</h2>
+            <form method="POST" th:action="@{/login}" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" required>
+                </div>
+                <button type="submit" class="button">Login</button>
+            </form>
+           
+                </svg>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

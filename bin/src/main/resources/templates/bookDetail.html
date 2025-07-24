@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title}">Dettaglio Libro</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/BookDetail.css}">
+	<link rel="stylesheet" th:href="@{/css/general.css}">
+</head>
+<body>
+
+	<!-- NAVBAR MODERNA -->
+	<nav class="navbar navbar-expand-lg navbar-dark glass-nav shadow-sm px-4">
+	    <a class="navbar-brand d-flex align-items-center" href="/">
+	        <span style="font-size: 1.8rem;">📚</span>
+	        <span class="ml-2 font-weight-bold">HomePage</span>
+	    </a>
+
+	    <div class="collapse navbar-collapse" id="navbarContent">
+	        <ul class="navbar-nav ml-auto mr-4">
+	        
+	        </ul>
+
+	        <div class="navbar-actions d-flex align-items-center">
+	            <th:block sec:authorize="isAnonymous()">
+	                <a class="btn btn-outline-light mr-2" href="/formLogin">🔐 Accedi</a>
+	                <a class="btn btn-light" href="/formRegister">📝 Registrati</a>
+	            </th:block>
+				<th:block sec:authorize="isAuthenticated()">
+				    <div class="d-flex align-items-center gap-2">
+				        <span class="fw-bold text-light" style="font-size: 1.5rem;">
+				            👤 <span th:text="${#authentication.name}">Utente</span>
+				        </span>
+				        <form th:action="@{/logout}" method="post" class="mb-0">
+				            <button class="btn btn-outline-danger btn-sm" type="submit">🚪 Logout</button>
+				        </form>
+				    </div>
+				</th:block>
+	        </div>
+	    </div>
+	</nav>
+
+
+<!-- CONTENUTO -->
+<div class="container mt-5">
+
+    <!-- Titolo -->
+    <div class="text-center mb-5">
+        <h1 th:text="${book.title}">Titolo Libro</h1>
+        <p class="text-muted" th:text="'Anno di pubblicazione: ' + ${book.publicationYear}">Anno</p>
+    </div>
+
+    <!-- Info Libro -->
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            <img th:if="${book.images != null and !book.images.isEmpty()}"
+                 th:src="@{'/images/books/' + ${book.images[0]}}"
+                 class="book-cover img-fluid"
+                 style="max-width: 220px;"
+                 alt="Copertina Libro"
+                 onerror="this.src='/images/default.jpg'" />
+            <img th:if="${book.images == null or book.images.isEmpty()}"
+                 src="/images/default-book.png"
+                 class="book-cover img-fluid"
+                 style="max-width: 220px;"
+                 alt="Copertina Mancante" />
+        </div>
+
+        <div class="col-md-6">
+            <div class="book-info-card">
+                <h5>Autori:</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="author : ${book.authors}">
+                        <a th:href="@{'/author/' + ${author.id}}" th:text="${author.name + ' ' + author.surname}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recensioni -->
+    <div class="mt-5">
+        <h3>📝 Recensioni</h3>
+		<div th:each="review : ${reviews}" class="review-card border border-secondary rounded p-3 mb-3 position-relative">
+
+		    <div class="d-flex justify-content-between">
+		        <div>
+		            <h5 th:text="${review.title}">Titolo recensione</h5>
+		            <p class="mb-1" th:text="${review.content}">Testo recensione</p>
+		            <p class="review-rating mb-0">⭐ <span th:text="${review.rating}">5</span>/5</p>
+		        </div>
+
+		        <!-- Solo ADMIN: pulsante elimina -->
+		        <div sec:authorize="hasAuthority('ADMIN')">
+		            <form th:action="@{'/admin/reviews/' + ${review.id} + '/delete'}"
+		                  method="post"
+		                  onsubmit="return confirm('Sei sicuro di voler eliminare questa recensione?');"
+		                  class="ml-3">
+		                <!-- token CSRF -->
+		                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		                <!-- per tornare al libro dopo la cancellazione -->
+		                <input type="hidden" name="bookId" th:value="${book.id}" />
+		                <button type="submit" class="btn btn-sm btn-outline-danger" title="Elimina recensione">
+		                    🗑 Elimina
+		                </button>
+		            </form>
+		        </div>
+		    </div>
+
+		</div>
+
+		
+    </div>
+
+    <!-- Scrivi una recensione -->
+    <div class="text-center mt-4">
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <div th:if="${canReview ?: false}">
+                <a th:href="@{'/book/' + ${book.id} + '/review'}" class="btn btn-primary">Scrivi una recensione</a>
+            </div>
+            <div th:if="${!(canReview ?: false)}" class="text-muted">
+                <p>Hai già recensito questo libro.</p>
+            </div>
+        </div>
+        <div th:unless="${#authorization.expression('isAuthenticated()')}" class="text-muted">
+            <p>Effettua il login per scrivere una recensione.</p>
+        </div>
+    </div>
+
+    <!-- Torna alla lista -->
+    <div class="text-center mt-5">
+        <a th:href="@{/bookList}" class="btn btn-outline-secondary">⬅ Torna alla lista libri</a>
+    </div>
+
+</div>
+
+</body>
+</html>

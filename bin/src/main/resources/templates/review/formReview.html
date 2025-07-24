@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Scrivi una recensione</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/formReview.css}">
+    <link rel="stylesheet" href="/css/general.css" />
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="form-card mx-auto text-start px-4 px-md-5 py-4">
+        <h2 class="text-center mb-4" th:text="'✍️ Recensione per: ' + ${book.title}">Titolo Libro</h2>
+
+        <form th:action="@{'/book/' + ${book.id} + '/review'}" th:object="${review}" method="post" novalidate>
+
+            <!-- Messaggi di errore globali -->
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore</p>
+            </div>
+
+            <!-- Titolo + Voto sulla stessa riga -->
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <label for="title" class="form-label">Titolo</label>
+                    <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Scrivi il titolo..." required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rating" class="form-label">Voto (1-5)</label>
+                    <input type="number" class="form-control" id="rating" min="1" max="5" th:field="*{rating}" placeholder="Es. 4" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+                </div>
+            </div>
+
+			<!-- Testo -->
+			<div class="row mb-3">
+			    <div class="col-12">
+			        <label for="content">Testo della recensione</label>
+			        <textarea class="form-control" id="content" th:field="*{content}" rows="5" placeholder="Scrivi la tua opinione..." required></textarea>
+			        <div class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+			    </div>
+			</div>
+
+            <!-- Pulsanti -->
+            <div class="d-flex justify-content-between mt-4">
+                <a th:href="@{'/book/' + ${book.id}}" class="btn btn-outline-secondary">⬅ Torna</a>
+                <button type="submit" class="btn btn-success">💬 Invia Recensione</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

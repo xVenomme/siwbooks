@@ -1,0 +1,67 @@
+UC1: Inserimento Libro
+Scenario principale di successo
+Attore principale: Amministratore
+    1. L'Amministratore effettua il login
+    2. L'Amministratore esegue l'operazione /admin/bookList
+    3. L'Amministratore esegue l'operazione cliccando sul bottone "modifica"
+    4. L'Amministratore esegue l'operazione /admin/bookForm
+    5. L'Amministratore inserisce i dati del nuovo libro e conferma
+
+UC2: Aggiunta Autori a Libro
+Scenario principale di successo
+Attore principale: Amministratore
+    1. L'Amministratore effettua il login
+    2. L'Amministratore esegue l'operazione /admin/authorList
+    3. L'Amministratore esegue l'operazione cliccando sul bottone "aggiungi Autore"
+    4. L'Amministratore esegue l'operazione /admin/authorForm
+    5. L'Amministratore esegue l'operazione /admin/bookList
+    6. L'Amministratore esegue l'operazione cliccando sul bottone "aggiungi Libro"
+    7. L'Amministratore esegue l'operazione /admin/bookForm
+    8. L'Amministratore sceglie uno dei libri ed esegue l'operazione tramite l'apposita tendina
+    9. L'Amministratore sceglie degli autori da aggiungere al libro e conferma
+
+UC3: Inserimento Autore
+Scenario principale di successo
+Attore principale: Amministratore
+    1. L'Amministratore effettua il login
+    2. L'Amministratore esegue l'operazione /admin/authorList
+    3. L'Amministratore esegue l'operazione cliccando sul bottone "aggiungi Autore"
+    4. L'Amministratore esegue l'operazione /admin/authorForm
+    5. L'Amministratore inserisce i dati del nuovo autore e conferma
+
+UC4: Inserimento Recensione
+Scenario principale di successo
+Attore Principale: Utente Registrato
+    1. L'Utente Registrato effettua il login
+    2. L'Utente Registrato esegue l'operazione /bookList
+    3. L'Utente Registrato esegue l'operazione /book/id
+    4. L'Utente Registrato esegue l'operazione /book/id/review
+    5. L'Utente Registrato inserisce i dati della recensione e conferma
+
+UC5: Visione Libri
+Scenario principale di successo
+Attore Principale: Utente Registrato
+    1. L'Utente Registrato effettua il login
+    2. L'Utente Registrato esegue l'operazione /bookList
+
+UC6: Visione Autori
+Scenario principale di successo
+Attore Principale: Utente Registrato
+    1. L'Utente Registrato effettua il login
+    2. L'Utente Registrato esegue l'operazione /authorList
+
+UC7: Visione Libri
+Scenario principale di successo
+Attore Principale: Utente
+    1. L'Utente esegue l'operazione /bookList
+
+UC8: Visione Autori
+Scenario principale di successo
+Attore Principale: Utente
+    1. L'Utente esegue l'operazione /authorList
+
+UC9: Registrazione
+Scenario principale di successo
+Attore Principale: Utente
+    1. L'Utente esegue l'operazione /register
+    2. L'Utente inserisce i propri dati e conferma

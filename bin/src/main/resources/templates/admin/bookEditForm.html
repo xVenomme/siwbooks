@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Libro</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/general.css}">
+</head>
+<body class="body-gradient py-5">
+
+<div class="container">
+    <div class="card shadow-lg mx-auto p-4" style="max-width: 760px;">
+        <h2 class="mb-4 text-center">✏️ Modifica Libro</h2>
+
+        <form th:action="@{'/admin/book/edit/' + ${book.id}}"
+              th:object="${book}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- Errori globali -->
+            <div class="alert alert-danger py-2"
+                 th:if="${#fields.hasGlobalErrors()}">
+                <ul class="mb-0">
+                    <li th:each="err : ${#fields.globalErrors()}"
+                        th:text="${err}"></li>
+                </ul>
+            </div>
+
+            <!-- Titolo -->
+            <div class="mb-3">
+                <label class="form-label">Titolo</label>
+                <input type="text" class="form-control" th:field="*{title}" required>
+                <div class="invalid-feedback d-block"
+                     th:if="${#fields.hasErrors('title')}"
+                     th:errors="*{title}"></div>
+            </div>
+
+            <!-- Anno pubblicazione -->
+            <div class="mb-3">
+                <label class="form-label">Anno pubblicazione</label>
+                <input type="number" min="0" class="form-control" th:field="*{publicationYear}" required>
+                <div class="invalid-feedback d-block"
+                     th:if="${#fields.hasErrors('publicationYear')}"
+                     th:errors="*{publicationYear}"></div>
+            </div>
+
+            <!-- Autori -->
+            <div class="mb-3">
+                <label class="form-label">Autori</label>
+                <select multiple class="form-select" th:field="*{authors}">
+                    <option th:each="a : ${allAuthors}"
+                            th:value="${a.id}"
+                            th:text="${a.name + ' ' + a.surname}"></option>
+                </select>
+                <small class="form-text text-muted">Tieni premuto CTRL (o CMD) per selezioni multiple.</small>
+                <div class="invalid-feedback d-block"
+                     th:if="${#fields.hasErrors('authors')}"
+                     th:errors="*{authors}"></div>
+            </div>
+
+            <!-- Cover attuale + pulsante rimozione (pulsante esterno via JS o form separato fuori) -->
+            <div class="mb-3">
+                <label class="form-label d-block">Cover attuale</label>
+
+                <div th:if="${book.cover != null}">
+                    <img th:src="@{'/images/books/' + ${book.cover}}"
+                         class="img-thumbnail mb-2"
+                         style="max-width:180px;">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="document.getElementById('deleteCoverForm').submit();">
+                        🗑 Rimuovi cover
+                    </button>
+                </div>
+                <p th:if="${book.cover == null}" class="text-muted mb-0">Nessuna cover presente.</p>
+            </div>
+
+            <!-- Nuova cover -->
+            <div class="mb-3">
+                <label class="form-label">Nuova cover (opzionale – sostituisce la precedente)</label>
+                <input type="file" name="coverFile" class="form-control">
+            </div>
+
+            <!-- Immagini extra esistenti -->
+            <div class="mb-3">
+                <label class="form-label">Immagini extra</label>
+
+                <div class="d-flex flex-wrap gap-3"
+                     th:if="${!#lists.isEmpty(book.images)}">
+                    <div th:each="img : ${book.images}" class="text-center">
+                        <img th:src="@{'/images/books/' + ${img}}"
+                             class="img-thumbnail mb-1"
+                             style="max-width:120px;">
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger"
+                                th:attr="data-img=${img}"
+                                onclick="submitDeleteImage(this);">🗑</button>
+                    </div>
+                </div>
+
+                <p th:if="${#lists.isEmpty(book.images)}" class="text-muted mb-0">
+                    Nessuna immagine extra.
+                </p>
+            </div>
+
+            <!-- Aggiungi nuove immagini -->
+            <div class="mb-4">
+                <label class="form-label">Aggiungi nuove immagini extra</label>
+                <input type="file" name="extraImages" class="form-control" multiple>
+            </div>
+
+            <!-- Pulsanti -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4">💾 Salva</button>
+                <a th:href="@{/admin/bookList}" class="btn btn-secondary ms-2 px-4">Annulla</a>
+            </div>
+        </form>
+
+        <!-- Form nascosti per azioni DELETE (fuori dal form principale) -->
+        <form id="deleteCoverForm"
+              th:if="${book.cover != null}"
+              th:action="@{'/admin/book/' + ${book.id} + '/cover/delete'}"
+              method="post" style="display:none;"></form>
+
+        <form id="deleteImageForm"
+              th:action="@{'/admin/book/' + ${book.id} + '/image/delete'}"
+              method="post" style="display:none;">
+            <input type="hidden" name="fileName" id="deleteImageName">
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function submitDeleteImage(btn){
+        const name = btn.getAttribute('data-img');
+        if(confirm('Eliminare questa immagine?')){
+            document.getElementById('deleteImageName').value = name;
+            document.getElementById('deleteImageForm').submit();
+        }
+    }
+</script>
+
+</body>
+</html>

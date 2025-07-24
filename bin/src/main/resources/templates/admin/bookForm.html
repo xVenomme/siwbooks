@@ -30,7 +30,7 @@
         <!-- Autori -->
         <div class="form-group text-start">
             <label for="authors">Autori:</label>
-            <select id="authors" name="authors" multiple class="form-control" th:field="*{authors}">
+            <select id="authors" name="authorIds" multiple class="form-control">
                 <option th:each="author : ${allAuthors}"
                         th:value="${author.id}"
                         th:text="${author.name + ' ' + author.surname}">
@@ -39,18 +39,27 @@
             <small class="form-text text-muted">Tieni premuto Ctrl (Windows) o Cmd (Mac) per selezioni multiple.</small>
         </div>
 
-        <!-- Immagine di copertina -->
-        <div class="form-group text-start">
-            <label for="coverFile">📕 Copertina:</label>
-            <input type="file" id="coverFile" name="coverFile" class="form-control-file">
-        </div>
+		<!-- Immagini di copertina (principale + secondarie) -->
+		<div class="form-group text-start">
+		  <label for="imageFiles">Immagini di copertina:</label>
+		  <input type="file"
+		         id="imageFiles"
+		         name="imageFiles"
+		         class="form-control-file"
+		         multiple>
+		  <small class="form-text text-muted">
+		    Puoi caricare una o più immagini.
+		  </small>
+		</div>
 
-        <!-- Immagini aggiuntive -->
-        <div class="form-group text-start">
-            <label for="extraImages">📷 Immagini aggiuntive:</label>
-            <input type="file" id="extraImages" name="extraImages" class="form-control-file" multiple>
-            <small class="form-text text-muted">Puoi caricare più immagini in una volta sola.</small>
-        </div>
+		
+
+		<!-- Altre immagini (multi‐file) -->
+		<div class="form-group">
+		  <label for="extraImages">📷 Aggiungi altre immagini</label>
+		  <input type="file" id="extraImages" name="extraImages"
+		         class="form-control" multiple>
+		</div>
 
         <!-- Pulsanti -->
         <div class="mt-4 text-center">

@@ -59,15 +59,26 @@
             <div class="card book-card h-100 shadow-sm text-center">
                 <a th:href="@{'/book/' + ${book.id}}" class="text-decoration-none text-dark">
                     <div class="book-image-container">
-                        <img th:if="${book.images != null and !book.images.isEmpty()}"
-                             th:src="@{'/images/books/' + ${book.images[0]}}"
-                             class="book-image"
-                             alt="Copertina libro"
-                             onerror="this.src='/images/default-book.png'" />
-                        <img th:if="${book.images == null or book.images.isEmpty()}"
-                             src="/images/default-book.png"
-                             class="book-image"
-                             alt="Copertina mancante" />
+						<!-- Mostra prima la cover -->
+						<img th:if="${book.cover != null}"
+						     th:src="@{'/images/books/' + ${book.cover}}"
+						     class="book-image"
+						     alt="Copertina libro"
+						     onerror="this.src='/images/default-book.png'" />
+
+						<!-- Altrimenti mostra la prima immagine extra -->
+						<img th:if="${book.cover == null and book.images != null and !book.images.isEmpty()}"
+						     th:src="@{'/images/books/' + ${book.images[0]}}"
+						     class="book-image"
+						     alt="Immagine libro"
+						     onerror="this.src='/images/default-book.png'" />
+
+						<!-- Altrimenti mostra immagine di default -->
+						<img th:if="${book.cover == null and (book.images == null or #lists.isEmpty(book.images))}"
+						     src="/images/default-book.png"
+						     class="book-image"
+						     alt="Copertina mancante" />
+
                     </div>
                     <div class="card-body">
                         <p class="book-title" th:text="${book.title}">Titolo Libro</p>

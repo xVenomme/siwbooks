@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiungi Autore</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/general.css" />
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4">➕ Aggiungi un nuovo autore</h2>
+
+    <form th:action="@{/admin/authorForm}" th:object="${author}" method="post" enctype="multipart/form-data">
+        <!-- Nome -->
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Mario" required>
+        </div>
+
+        <!-- Cognome -->
+        <div class="form-group">
+            <label for="surname">Cognome</label>
+            <input type="text" id="surname" class="form-control" th:field="*{surname}" placeholder="Rossi" required>
+        </div>
+
+        <!-- Data di nascita -->
+        <div class="form-group">
+            <label for="birthDate">Data di nascita</label>
+            <input type="date" id="birthDate" class="form-control" th:field="*{birthDate}" required>
+        </div>
+
+        <!-- Data di morte -->
+        <div class="form-group">
+            <label for="deathDate">Data di morte (se applicabile)</label>
+            <input type="date" id="deathDate" class="form-control" th:field="*{deathDate}">
+        </div>
+
+        <!-- Nazionalità -->
+        <div class="form-group">
+            <label for="nationality">Nazionalità</label>
+            <input type="text" id="nationality" class="form-control" th:field="*{nationality}" placeholder="Italiana">
+        </div>
+
+        <!-- Foto principale -->
+        <div class="form-group">
+            <label for="imageFile">Foto principale dell'autore</label>
+            <input type="file" id="imageFile" name="imageFile" class="form-control" required>
+        </div>
+
+        <!-- Altre immagini (facoltative) -->
+        <div class="form-group">
+            <label for="extraImages">📷 Aggiungi altre foto (opzionale)</label>
+            <input type="file" id="extraImages" name="extraImages" class="form-control" multiple>
+        </div>
+
+        <!-- Bottoni -->
+        <button type="submit" class="btn btn-secondary">💾 Salva Autore</button>
+        <a href="/admin/authorList" class="btn btn-outline-secondary ml-2">Annulla</a>
+    </form>
+</div>
+
+</body>
+</html>
