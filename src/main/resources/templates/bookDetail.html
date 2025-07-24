@@ -24,7 +24,7 @@
 	        <div class="navbar-actions d-flex align-items-center">
 	            <th:block sec:authorize="isAnonymous()">
 	                <a class="btn btn-outline-light mr-2" href="/formLogin">🔐 Accedi</a>
-	                <a class="btn btn-light" href="/formRegister">📝 Registrati</a>
+	                <a class="btn btn-light" href="/register">📝 Registrati</a>
 	            </th:block>
 				<th:block sec:authorize="isAuthenticated()">
 				    <div class="d-flex align-items-center gap-2">
@@ -52,19 +52,36 @@
 
     <!-- Info Libro -->
     <div class="row justify-content-center">
-        <div class="col-md-4 text-center">
-            <img th:if="${book.images != null and !book.images.isEmpty()}"
-                 th:src="@{'/images/books/' + ${book.images[0]}}"
-                 class="book-cover img-fluid"
-                 style="max-width: 220px;"
-                 alt="Copertina Libro"
-                 onerror="this.src='/images/default.jpg'" />
-            <img th:if="${book.images == null or book.images.isEmpty()}"
-                 src="/images/default-book.png"
-                 class="book-cover img-fluid"
-                 style="max-width: 220px;"
-                 alt="Copertina Mancante" />
-        </div>
+		<!-- Colonna sinistra: copertina e immagini -->
+		        <div class="col-md-4 text-center">
+		            <h5>📕 Copertina:</h5>
+		            <img th:if="${book.cover != null}"
+		                 th:src="@{'/images/books/' + ${book.cover}}"
+		                 class="img-thumbnail mb-3"
+		                 style="max-width: 220px;"
+		                 alt="Copertina libro"
+		                 onerror="this.src='/images/default-book.png'" />
+		            <img th:if="${book.cover == null}"
+		                 src="/images/default-book.png"
+		                 class="img-thumbnail mb-3"
+		                 style="max-width: 220px;"
+		                 alt="Copertina mancante" />
+
+		            <h5>📸 Immagini aggiuntive:</h5>
+		            <div class="d-flex flex-wrap justify-content-center gap-2">
+		                <th:block th:if="${book.images != null and !#lists.isEmpty(book.images)}">
+		                    <img th:each="imgName : ${book.images}"
+		                         th:src="@{'/images/books/' + ${imgName}}"
+		                         class="img-thumbnail"
+		                         style="width: 150px; height: auto; object-fit: cover;"
+		                         alt="Immagine libro"
+		                         onerror="this.src='/images/default.png'" />
+		                </th:block>
+		                <th:block th:if="${book.images == null or #lists.isEmpty(book.images)}">
+		                    <p class="text-muted">Nessuna immagine aggiuntiva.</p>
+		                </th:block>
+		            </div>
+		        </div>
 
         <div class="col-md-6">
             <div class="book-info-card">

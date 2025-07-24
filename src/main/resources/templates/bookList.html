@@ -46,13 +46,15 @@
 <body>
 
 <div class="container mt-5">
-    <!-- Titolo pagina -->
-    <div class="row mb-4 text-center">
-        <div class="col">
-            <h1>Libri Disponibili</h1>
-        </div>
-    </div>
-
+	<!-- Titolo pagina -->
+	<div class="row mb-4 justify-content-between align-items-center">
+	    <div class="col-md-6 text-center text-md-left">
+	        <h1>Libri Disponibili</h1>
+	    </div>
+	    <div class="col-md-6 text-md-right" th:if="${isAdmin}">
+	        <a href="/admin/bookForm" class="btn btn-success">➕ Aggiungi Libro</a>
+	    </div>
+	</div>
     <!-- Griglia libri -->
     <div class="row" th:if="${books != null and !books.isEmpty()}">
         <div class="col-md-3 mb-4" th:each="book : ${books}">
@@ -84,6 +86,17 @@
                         <p class="book-title" th:text="${book.title}">Titolo Libro</p>
                         <p class="book-year" th:text="'Pubblicato nel ' + ${book.publicationYear}">Anno</p>
                     </div>
+					<!-- Bottone Modifica -->
+					<div th:if="${isAdmin}">
+						
+						<a th:href="@{'/admin/book/edit/' + ${book.id}}" class="btn btn-warning btn-sm mt-1">✏️ Modifica</a>
+
+											<form th:action="@{'/admin/book/delete/' + ${book.id}}" method="post" class="mt-2">
+											    <button type="submit" class="btn btn-danger btn-sm">🗑️ Elimina</button>
+											</form>
+					</div>
+					
+
                 </a>
             </div>
         </div>

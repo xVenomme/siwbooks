@@ -154,6 +154,7 @@ public class AuthorController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getAdminAuthorList(Model model) {
         model.addAttribute("authors", authorService.findAll());
-        return "admin/authorList";
+        model.addAttribute("isAdmin", true);
+        return "authorList";
     }
 }

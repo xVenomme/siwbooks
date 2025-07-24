@@ -73,7 +73,8 @@ public class BookController {
     public String adminBookList(Model model) {
         model.addAttribute("books", bookService.findAll());
         model.addAttribute("title", "Gestione Libri");
-        return "admin/bookList";
+        model.addAttribute("isAdmin",true);
+        return "bookList";
     }
 
     @GetMapping("/admin/bookForm")

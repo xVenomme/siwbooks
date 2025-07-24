@@ -15,6 +15,11 @@
 <div class="container mt-4">
     <h1 class="mb-4" th:text="${title}">Lista Autori</h1>
 
+    <!-- Pulsante Aggiungi Autore -->
+    <div class="mb-3" th:if="${isAdmin}">
+        <a href="/admin/authorForm" class="btn btn-success">➕ Aggiungi Autore</a>
+    </div>
+
     <!-- Lista Autori -->
     <div class="row">
         <div class="col-md-12">
@@ -33,7 +38,15 @@
                             </a>
                         </div>
 
-                       
+                        <!-- Pulsanti Azione -->
+                        <div class="d-flex mt-2 mt-md-0" th:if="${isAdmin}">
+                            <a th:href="@{'/admin/author/edit/' + ${author.id}}" class="btn btn-warning btn-sm mr-2">
+                                ✏️ Modifica
+                            </a>
+                            <form th:action="@{'/admin/author/delete/' + ${author.id}}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">🗑️ Elimina</button>
+                            </form>
+                        </div>
                     </div>
                 </th:block>
             </div>
