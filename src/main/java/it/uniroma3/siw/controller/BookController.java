@@ -110,6 +110,7 @@ public class BookController {
         model.addAttribute("allAuthors", authorService.findAll());
         return "admin/bookEditForm";
     }
+    
 
     @PostMapping("/admin/book/edit/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -220,4 +221,19 @@ public class BookController {
             Files.deleteIfExists(uploadPath.resolve(name));
         } catch (IOException ignored) {}
     }
+    
+    
+    
+    /*
+     * 
+     * GESTIONE BOTTONE ANNO
+     */
+    @GetMapping("/book/perAnno/{anno}")
+    public String perAnno(@PathVariable Integer anno, Model model) {
+    	 model.addAttribute("books", bookService.findByPublicationYear(anno));
+         model.addAttribute("title", "Lista Libri");
+    	return "bookList";
+    }
+
+    
 }

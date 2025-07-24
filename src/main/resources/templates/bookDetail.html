@@ -41,14 +41,19 @@
 	</nav>
 
 
-<!-- CONTENUTO -->
+<!-- TITOLO E ANNO CLICCABILE-->
 <div class="container mt-5">
 
     <!-- Titolo -->
-    <div class="text-center mb-5">
-        <h1 th:text="${book.title}">Titolo Libro</h1>
-        <p class="text-muted" th:text="'Anno di pubblicazione: ' + ${book.publicationYear}">Anno</p>
-    </div>
+	<div class="text-center mb-5">
+	    <h1 th:text="${book.title}">Titolo Libro</h1>
+	    <p class="text-muted">
+	        Anno di pubblicazione:
+	        <a th:href="@{'/book/perAnno/' + ${book.publicationYear}}"
+	           th:text="${book.publicationYear}">2025</a>
+	    </p>
+	</div>
+
 
     <!-- Info Libro -->
     <div class="row justify-content-center">

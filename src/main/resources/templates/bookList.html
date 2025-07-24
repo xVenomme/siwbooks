@@ -66,26 +66,29 @@
 						     th:src="@{'/images/books/' + ${book.cover}}"
 						     class="book-image"
 						     alt="Copertina libro"
-						     onerror="this.src='/images/default-book.png'" />
+						     onerror="this.src='/images/default.jpg'" />
 
 						<!-- Altrimenti mostra la prima immagine extra -->
 						<img th:if="${book.cover == null and book.images != null and !book.images.isEmpty()}"
 						     th:src="@{'/images/books/' + ${book.images[0]}}"
 						     class="book-image"
 						     alt="Immagine libro"
-						     onerror="this.src='/images/default-book.png'" />
+						     onerror="this.src='/images/default.jpg'" />
 
 						<!-- Altrimenti mostra immagine di default -->
 						<img th:if="${book.cover == null and (book.images == null or #lists.isEmpty(book.images))}"
-						     src="/images/default-book.png"
+						     src="/images/default.jpg"
 						     class="book-image"
 						     alt="Copertina mancante" />
+							 
+							 
 
                     </div>
                     <div class="card-body">
                         <p class="book-title" th:text="${book.title}">Titolo Libro</p>
                         <p class="book-year" th:text="'Pubblicato nel ' + ${book.publicationYear}">Anno</p>
                     </div>
+					
 					<!-- Bottone Modifica -->
 					<div th:if="${isAdmin}">
 						
